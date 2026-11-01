@@ -333,7 +333,7 @@ Left 4 Dead 2 servers only accept players coming from a Steam matchmaking lobby 
 
 ### Choosing a game mode
 
-All game modes use the same campaign maps (`c1m1_hotel`, `c2m1_highway`, ... `c14m1_junkyard`). Pick the mode with `+mp_gamemode <coop|realism|versus|survival|scavenge>`; survival and scavenge only run on maps that have those modes set up.
+All game modes use the same campaign maps (`c1m1_hotel`, `c2m1_highway`, ... `c14m1_junkyard`). Pick the mode with `+mp_gamemode <coop|realism|versus|survival|scavenge>`; survival and scavenge only run on maps that have those modes set up. `mp_gamemode`, `sv_allowdownload` and `sv_allowupload` are hidden cvars in Left 4 Dead 2: a `.cfg` file can't set them (the console prints `Unknown command "mp_gamemode"`), so set them in `START_ARGS`, or at runtime with SourceMod's `sm_cvar`.
 
 ### `Failed to open bin/dedicated_srv.so` on first boot
 
