@@ -327,6 +327,10 @@ docker run --privileged ...
 
 The Left 4 Dead 2 Dedicated Server app only defines a Windows launch configuration on Steam, so a fresh Linux install fails with this error. The image handles this in the `PreSteamInstallGame/10-BootstrapInstall.ps1` hook: when `Server/steamapps/appmanifest_222860.acf` doesn't exist yet, it refreshes the app info (`app_info_update 1`) and installs once with the Windows platform, and the normal Linux install then adds the Linux binaries. Later updates work as usual. If the first install was interrupted, delete `Server/steamapps/appmanifest_222860.acf` and restart the container to run the bootstrap again.
 
+### `Overlay/` fills up with copies of the game files
+
+The entrypoint runs `chown -R /config` after mounting the overlay, and changing the owner of a file through `Merged/` makes OverlayFS copy it up into `Overlay/`. SteamCMD runs as root, so the `PostSteamInstallGame/10-ChownServer.ps1` hook hands `Server/` back to the run user after every install or update. If an older container already copied files up, stop it, keep only your own files in `Overlay/` (configs, `addons/`) and delete the rest.
+
 ### Players can't join with `connect <ip>`
 
 Left 4 Dead 2 servers only accept players coming from a Steam matchmaking lobby unless `sv_allow_lobby_connect_only` is `0`. The default `START_ARGS` sets it; if you override `START_ARGS` or set it in `server.cfg`, keep it at `0`. For a LAN-only server also add `+sv_lan 1`.
