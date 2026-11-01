@@ -3,8 +3,9 @@
 
 # The Left 4 Dead 2 Dedicated Server app only defines a Windows launch configuration,
 # so a fresh Linux install fails with "Missing configuration". Installing once with
-# the Windows platform creates the app manifest; after that the regular Linux
-# install/update (run next by 20-InstallGame.ps1) adds the Linux binaries and works.
+# the Windows platform (after refreshing the app info) creates the app manifest;
+# after that the regular Linux install/update (run next by 20-InstallGame.ps1) adds
+# the Linux binaries and works.
 
 $manifest = Join-Path $Env:SERVER_DIR "steamapps/appmanifest_${Env:STEAM_APP_ID}.acf"
 
@@ -28,7 +29,9 @@ if ($Env:STEAM_USERNAME -ne "anonymous" -and $Env:STEAM_PASSWORD) {
     $steamCmdArgs += $Env:STEAM_PASSWORD
 }
 
-$steamCmdArgs += "+app_update", $Env:STEAM_APP_ID
+# A fresh SteamCMD has no cached app info for the server yet, and app_update then
+# fails with "Missing configuration" even for the Windows platform.
+$steamCmdArgs += "+app_info_update", "1", "+app_update", $Env:STEAM_APP_ID
 
 if ($Env:STEAM_BRANCH) {
     $steamCmdArgs += "-beta", $Env:STEAM_BRANCH

@@ -369,7 +369,7 @@ If you see warnings about OverlayFS:
 
 ### `ERROR! Failed to install app '222860' (Missing configuration)`
 
-The Left 4 Dead 2 Dedicated Server app only defines a Windows launch configuration on Steam, so a fresh Linux install fails with this error. The image handles this in the `PreSteamInstallGame/10-BootstrapInstall.ps1` hook: when `Server/steamapps/appmanifest_222860.acf` doesn't exist yet, it installs once with the Windows platform, and the normal Linux install then adds the Linux binaries. Later updates work as usual. If the first install was interrupted, delete `Server/steamapps/appmanifest_222860.acf` and restart the container to run the bootstrap again.
+The Left 4 Dead 2 Dedicated Server app only defines a Windows launch configuration on Steam, so a fresh Linux install fails with this error. The image handles this in the `PreSteamInstallGame/10-BootstrapInstall.ps1` hook: when `Server/steamapps/appmanifest_222860.acf` doesn't exist yet, it refreshes the app info (`app_info_update 1`) and installs once with the Windows platform, and the normal Linux install then adds the Linux binaries. Later updates work as usual. If the first install was interrupted, delete `Server/steamapps/appmanifest_222860.acf` and restart the container to run the bootstrap again.
 
 ### Players can't join with `connect <ip>`
 
